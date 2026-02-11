@@ -17,8 +17,6 @@ export const kudosQueryKey: readonly ['kudos', number, number] = [
   0,
 ];
 
-export type ListKudosResponse = ListKudosResponseDto;
-
 export class ApiError extends Error {
   status?: number;
 
@@ -49,7 +47,7 @@ const parseErrorMessage = async (response: Response) => {
   }
 };
 
-export const fetchKudos = async (): Promise<ListKudosResponse> => {
+export const fetchKudos = async (): Promise<ListKudosResponseDto> => {
   const response = await fetch(
     `${API_BASE_URL}/kudos?limit=${FEED_LIMIT}&offset=0`
   );
