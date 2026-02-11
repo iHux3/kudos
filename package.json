@@ -3,16 +3,15 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "backend": "nx run @kudos/backend:serve:ready",
+    "frontend": "nx run @kudos/frontend:serve",
+    "e2e": "nx run @kudos/frontend-e2e:e2e",
     "lint": "nx run-many -t lint --all --parallel=3 --nxBail",
     "typecheck": "nx run-many -t typecheck --all --parallel=3 --nxBail",
     "build": "nx run-many -t build --all --parallel=3 --nxBail",
-    "e2e": "nx run @kudos/frontend-e2e:e2e",
-    "backend:migrate": "nx run @kudos/backend:migrate",
-    "backend:migrate:generate": "nx run @kudos/backend:migrate:generate",
-    "backend:serve": "nx run @kudos/backend:serve",
-    "backend:serve:ready": "nx run @kudos/backend:serve:ready",
     "backend:test": "npx nx test @kudos/backend --output-style=stream",
-    "frontend:serve": "nx run @kudos/frontend:serve"
+    "backend:migrate": "nx run @kudos/backend:migrate",
+    "backend:migrate:generate": "nx run @kudos/backend:migrate:generate"
   },
   "private": true,
   "devDependencies": {
