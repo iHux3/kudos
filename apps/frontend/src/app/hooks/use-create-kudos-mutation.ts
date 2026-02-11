@@ -1,11 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { CreateKudosBodyDto, KudosDto } from '@kudos/shared';
+import type { CreateKudosBodyDto, KudosDto, ListKudosResponseDto } from '@kudos/shared';
 import {
   createKudos,
   DEMO_SENDER_ID,
   FEED_LIMIT,
   kudosQueryKey,
-  type ListKudosResponse,
 } from '../kudos.api';
 
 const addOptimisticKudos = (payload: CreateKudosBodyDto): KudosDto => ({
@@ -25,10 +24,10 @@ export const useCreateKudosMutation = () => {
     onMutate: async (payload) => {
       await queryClient.cancelQueries({ queryKey: kudosQueryKey });
       const previous =
-        queryClient.getQueryData<ListKudosResponse>(kudosQueryKey) ?? null;
+        queryClient.getQueryData<ListKudosResponseDto>(kudosQueryKey) ?? null;
 
       const optimisticItem = addOptimisticKudos(payload);
-      queryClient.setQueryData<ListKudosResponse>(kudosQueryKey, (current) => {
+      queryClient.setQueryData<ListKudosResponseDto>(kudosQueryKey, (current) => {
         const currentItems = current?.items ?? [];
         const optimisticItems = [optimisticItem, ...currentItems].slice(
           0,
