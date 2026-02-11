@@ -15,11 +15,15 @@ export function App() {
         </header>
 
         <section
-          className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[360px_minmax(0,1fr)]"
+          className="mt-6 flex w-full flex-col gap-4 lg:flex-row"
           aria-label="Kudos workspace"
         >
-          <KudosForm />
-          <KudosList />
+          <div className="w-full lg:w-[360px] lg:shrink-0">
+            <KudosForm />
+          </div>
+          <div className="min-w-0 flex-1">
+            <KudosList />
+          </div>
         </section>
       </div>
     </main>
