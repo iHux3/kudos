@@ -25,7 +25,17 @@ export const KudosDtoSchema = z.object({
   createdAt: z.iso.datetime(),
 });
 
+export const ListKudosResponseSchema = z.object({
+  items: z.array(KudosDtoSchema),
+  pagination: z.object({
+    limit: z.number().int().min(1).max(100),
+    offset: z.number().int().min(0),
+    count: z.number().int().min(0),
+  }),
+});
+
 export type SenderIdHeaderDto = z.infer<typeof SenderIdHeaderSchema>;
 export type CreateKudosBodyDto = z.infer<typeof CreateKudosBodySchema>;
 export type ListKudosQueryDto = z.infer<typeof ListKudosQuerySchema>;
 export type KudosDto = z.infer<typeof KudosDtoSchema>;
+export type ListKudosResponseDto = z.infer<typeof ListKudosResponseSchema>;

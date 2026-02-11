@@ -1,42 +1,49 @@
-import type { KudosDto, CreateKudosBodyDto } from '@kudos/shared';
+import {
+  KudosDtoSchema,
+  ListKudosResponseSchema,
+  type KudosDto,
+  type CreateKudosBodyDto,
+  type ListKudosResponseDto,
+} from '@kudos/shared';
+import { z } from 'zod';
 
-declare global {
-  interface Window {
-    __KUDOS_API_URL__?: string;
+export const API_BASE_URL =
+  import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
+export const DEMO_SENDER_ID = '11111111-1111-4111-8111-111111111111';
+export const FEED_LIMIT = 20;
+export const kudosQueryKey: readonly ['kudos', number, number] = [
+  'kudos',
+  FEED_LIMIT,
+  0,
+];
+
+export type ListKudosResponse = ListKudosResponseDto;
+
+export class ApiError extends Error {
+  status?: number;
+
+  constructor(status: number, message: string) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
   }
 }
 
-const runtimeApiUrl =
-  typeof window === 'undefined' ? undefined : window.__KUDOS_API_URL__;
-
-export const API_BASE_URL =
-  runtimeApiUrl ?? import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
-export const DEMO_SENDER_ID = '11111111-1111-4111-8111-111111111111';
-export const FEED_LIMIT = 20;
-export const kudosQueryKey = ['kudos', FEED_LIMIT, 0] as const;
-
-type ListKudosResponse = {
-  items: KudosDto[];
-  pagination: {
-    limit: number;
-    offset: number;
-    count: number;
-  };
-};
-
-type ApiError = Error & { status?: number };
-
 const createApiError = (status: number, message: string): ApiError => {
-  const error = new Error(message) as ApiError;
-  error.status = status;
-  return error;
+  return new ApiError(status, message);
 };
+
+const ErrorPayloadSchema = z
+  .object({
+    message: z.string().optional(),
+  })
+  .passthrough();
 
 const parseErrorMessage = async (response: Response) => {
   const fallback = response.statusText || 'Request failed.';
   try {
-    const payload = (await response.json()) as { message?: string };
-    return payload.message ?? fallback;
+    const parsed = ErrorPayloadSchema.safeParse(await response.json());
+    return parsed.success ? (parsed.data.message ?? fallback) : fallback;
   } catch {
     return fallback;
   }
@@ -50,7 +57,7 @@ export const fetchKudos = async (): Promise<ListKudosResponse> => {
     throw createApiError(response.status, await parseErrorMessage(response));
   }
 
-  return (await response.json()) as ListKudosResponse;
+  return ListKudosResponseSchema.parse(await response.json());
 };
 
 export const createKudos = async (
@@ -69,7 +76,5 @@ export const createKudos = async (
     throw createApiError(response.status, await parseErrorMessage(response));
   }
 
-  return (await response.json()) as KudosDto;
+  return KudosDtoSchema.parse(await response.json());
 };
-
-export type { ListKudosResponse };
