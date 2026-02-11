@@ -5,11 +5,14 @@
   "scripts": {
     "lint": "nx run-many -t lint --all --parallel=3 --nxBail",
     "typecheck": "nx run-many -t typecheck --all --parallel=3 --nxBail",
-    "test": "nx run-many -t test --all --parallel=3 --nxBail",
     "build": "nx run-many -t build --all --parallel=3 --nxBail",
-    "e2e": "nx run-many -t e2e --all --parallel=1 --nxBail",
-    "verify": "nx sync:check && npm run lint && npm run typecheck && npm run test && npm run build",
-    "verify:affected": "nx affected -t lint,typecheck,test,build --nxBail"
+    "e2e": "nx run @kudos/frontend-e2e:e2e",
+    "backend:migrate": "nx run @kudos/backend:migrate",
+    "backend:migrate:generate": "nx run @kudos/backend:migrate:generate",
+    "backend:serve": "nx run @kudos/backend:serve",
+    "backend:serve:ready": "nx run @kudos/backend:serve:ready",
+    "backend:test": "npx nx test @kudos/backend --output-style=stream",
+    "frontend:serve": "nx run @kudos/frontend:serve"
   },
   "private": true,
   "devDependencies": {
@@ -67,17 +70,18 @@
   },
   "workspaces": [
     "apps/*",
-    "libs/*",
-    "libs",
-    "apps/backend/apps/*"
+    "libs/*"
   ],
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@tanstack/react-query": "^5.90.21",
     "better-sqlite3": "^12.6.2",
     "dotenv": "^17.2.4",
     "drizzle-orm": "^0.45.1",
     "express": "^4.21.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.71.1",
     "react-router-dom": "6.30.3"
   }
 }

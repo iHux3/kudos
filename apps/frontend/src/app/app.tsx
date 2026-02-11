@@ -1,49 +1,28 @@
-import NxWelcome from './nx-welcome';
-
-import { Route, Routes, Link } from 'react-router-dom';
+import { KudosForm } from './components/kudos-form';
+import { KudosList } from './components/kudos-list';
 
 export function App() {
   return (
-    <div>
-      <NxWelcome title="@kudos/frontend" />
+    <main className="min-h-screen bg-slate-50">
+      <div className="mx-auto max-w-6xl px-4 pb-12 pt-8">
+        <header>
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+            Kudos Wall
+          </h1>
+          <p className="mt-3 text-slate-600">
+            Posli dik kolegovi a sleduj posledni kudos v realnem feedu.
+          </p>
+        </header>
 
-      {/* START: routes */}
-      {/* These routes and navigation have been generated for you */}
-      {/* Feel free to move and update them to fit your needs */}
-      <br />
-      <hr />
-      <br />
-      <div role="navigation">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/page-2">Page 2</Link>
-          </li>
-        </ul>
+        <section
+          className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[360px_minmax(0,1fr)]"
+          aria-label="Kudos workspace"
+        >
+          <KudosForm />
+          <KudosList />
+        </section>
       </div>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              This is the generated root route.{' '}
-              <Link to="/page-2">Click here for page 2.</Link>
-            </div>
-          }
-        />
-        <Route
-          path="/page-2"
-          element={
-            <div>
-              <Link to="/">Click here to go back to root page.</Link>
-            </div>
-          }
-        />
-      </Routes>
-      {/* END: routes */}
-    </div>
+    </main>
   );
 }
 
