@@ -2,7 +2,6 @@
   "name": "@kudos/shared",
   "version": "0.0.1",
   "private": true,
-  "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -10,8 +9,9 @@
     "./package.json": "./package.json",
     ".": {
       "@kudos/source": "./src/index.ts",
+      "import": "./src/index.ts",
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
+      "require": "./dist/index.js",
       "default": "./dist/index.js"
     }
   },
