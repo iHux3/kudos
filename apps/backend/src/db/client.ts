@@ -4,9 +4,6 @@ import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
 import path from 'node:path';
 import * as schema from './schema';
 
-console.log("XXX", process.env.NODE_ENV);
-console.log("XXX", process.env.DATABASE_URL);
-
 const databaseUrl = process.env.DATABASE_URL ?? 'kudos.sqlite'
 
 const sqlite = new Database(databaseUrl);
