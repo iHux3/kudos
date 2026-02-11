@@ -1,6 +1,7 @@
 import {
   CreateKudosBodySchema,
   type CreateKudosBodyDto,
+  type ListKudosResponseDto,
   ListKudosQuerySchema,
   type KudosDto,
   SenderIdHeaderSchema,
@@ -19,10 +20,16 @@ export type ListKudosInput = {
   query: unknown;
 };
 
-type ServiceResult = {
-  status: number;
-  body: unknown;
+type ErrorBody = {
+  message: string;
+  errors?: unknown;
 };
+
+type ServiceResult =
+  | { status: 201; body: KudosDto }
+  | { status: 200; body: ListKudosResponseDto }
+  | { status: 400; body: ErrorBody }
+  | { status: 500; body: ErrorBody };
 
 export type KudosServiceDependencies = {
   createKudos: (input: CreateKudosBodyDto & { senderId: string }) => Promise<KudosDto>;
@@ -72,7 +79,8 @@ export const handleCreateKudos = async (
       status: 201,
       body: kudos,
     };
-  } catch {
+  } catch (e) {
+    console.error(e);
     return {
       status: 500,
       body: { message: 'Failed to create kudos.' },
