@@ -75,6 +75,18 @@
         ],
         "executor": "nx:noop"
       },
+      "migrate": {
+        "executor": "nx:run-commands",
+        "cache": false,
+        "options": {
+          "command": "drizzle-kit migrate --config apps/backend/drizzle.config.ts"
+        },
+        "configurations": {
+          "generate": {
+            "command": "drizzle-kit generate --config apps/backend/drizzle.config.ts"
+          }
+        }
+      },
       "serve": {
         "continuous": true,
         "executor": "@nx/js:node",
@@ -92,12 +104,28 @@
           },
           "production": {
             "buildTarget": "@kudos/backend:build:production"
+          },
+          "ready": {
+            "buildTarget": "@kudos/backend:build:development",
+            "waitUntilTargets": [
+              "@kudos/backend:migrate"
+            ]
           }
+        }
+      },
+      "test": {
+        "executor": "@nx/vitest:test",
+        "outputs": [
+          "{projectRoot}/test-output/vitest"
+        ],
+        "options": {
+          "config": "apps/backend/vitest.config.ts"
         }
       }
     }
   },
   "dependencies": {
+    "@kudos/shared": "0.0.1",
     "express": "^4.21.2"
   }
 }
