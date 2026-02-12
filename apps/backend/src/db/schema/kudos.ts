@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { check, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { check, index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { KUDOS_CATEGORIES } from '@kudos/shared';
 
 export const kudosCategories = KUDOS_CATEGORIES;
@@ -26,6 +26,7 @@ export const kudosTable = sqliteTable(
       'kudos_category_check',
       sql`${table.category} in (${sql.raw(categoryListSql)})`
     ),
+    index('kudos_created_at_idx').on(table.createdAt),
   ]
 );
 

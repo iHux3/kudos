@@ -1,0 +1,1 @@
+CREATE INDEX `kudos_created_at_idx` ON `kudos` (`created_at`);

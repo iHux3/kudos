@@ -6,6 +6,7 @@ import {
   type KudosDto,
   SenderIdHeaderSchema,
 } from '@kudos/shared';
+import { z } from 'zod';
 import {
   createKudos as createKudosRepository,
   listKudos as listKudosRepository,
@@ -53,7 +54,7 @@ export const handleCreateKudos = async (
       status: 400,
       body: {
         message: 'Invalid x-user-id header.',
-        errors: senderIdResult.error.flatten(),
+        errors: z.flattenError(senderIdResult.error),
       },
     };
   }
@@ -64,7 +65,7 @@ export const handleCreateKudos = async (
       status: 400,
       body: {
         message: 'Invalid request body.',
-        errors: bodyResult.error.flatten(),
+        errors: z.flattenError(bodyResult.error),
       },
     };
   }
@@ -98,7 +99,7 @@ export const handleListKudos = async (
       status: 400,
       body: {
         message: 'Invalid query params.',
-        errors: queryResult.error.flatten(),
+        errors: z.flattenError(queryResult.error),
       },
     };
   }
